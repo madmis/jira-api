@@ -1,0 +1,23 @@
+{
+    "name": "madmis/jira-api",
+    "description": "Jira REST API php client",
+    "license": "MIT",
+    "keywords": ["jira","rest","api"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Machin Dmitry",
+            "homepage": "http://madmis.com.ua/",
+            "email": "machin.dmitry@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "autoload": {
+        "psr-4" : {
+            "madmis\\" : "src"
+        }
+    }
+}
