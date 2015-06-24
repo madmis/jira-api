@@ -3,6 +3,8 @@
 namespace madmis\JiraApi;
 
 use madmis\JiraApi\Authentication\AuthenticationInterface;
+use madmis\JiraApi\Client\ClientInterface;
+use madmis\JiraApi\Client\GuzzleClient;
 
 class JiraApi
 {
@@ -15,6 +17,11 @@ class JiraApi
     protected $authentication;
 
     /**
+     * @var ClientInterface
+     */
+    private $client;
+
+    /**
      * @param string $jiraBaseUri
      * @param AuthenticationInterface $authentication
      */
@@ -22,5 +29,7 @@ class JiraApi
     {
         $this->jiraBaseUri = trim($jiraBaseUri, '/');
         $this->authentication = $authentication;
+
+        $this->client = new GuzzleClient();
     }
 }
