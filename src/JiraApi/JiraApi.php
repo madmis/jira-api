@@ -42,9 +42,11 @@ class JiraApi
         return sprintf('%s%s', $this->jiraBaseUrl, $this->jiraApiUrn);
     }
 
+    /**
+     * @return IssueEndpoint
+     */
     public function issue()
     {
-        $endpoint = new IssueEndpoint($this->client);
-        $response = $endpoint->getIssue('121212');
+        return new IssueEndpoint($this->client);
     }
 }

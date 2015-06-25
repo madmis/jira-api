@@ -26,6 +26,7 @@ class GuzzleClient extends Client implements ClientInterface
      */
     public function __construct(AuthenticationInterface $authentication, $apiUri)
     {
+        parent::__construct();
         $this->authentication = $authentication;
         $this->apiUri = $apiUri;
     }
