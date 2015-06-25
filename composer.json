@@ -15,8 +15,9 @@
     "require": {
         "php": ">=5.5.0",
         "guzzlehttp/psr7": "^1.0@dev",
-        "guzzlehttp/guzzle": "^6.0@dev",
-        "kriswallsmith/buzz": "dev-master"
+        "guzzlehttp/guzzle": "6.0.1",
+        "kriswallsmith/buzz": "dev-master",
+        "httplib/http": "^1.0@dev"
     },
     "autoload": {
         "psr-4" : {

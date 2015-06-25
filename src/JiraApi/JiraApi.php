@@ -5,16 +5,19 @@ namespace madmis\JiraApi;
 use madmis\JiraApi\Authentication\AuthenticationInterface;
 use madmis\JiraApi\Client\ClientInterface;
 use madmis\JiraApi\Client\GuzzleClient;
+use madmis\JiraApi\Endpoint\IssueEndpoint;
 
 class JiraApi
 {
     /**
      * @var string
      */
-    private $jiraBaseUri;
+    private $jiraBaseUrl;
 
-    /** @var AuthenticationInterface */
-    protected $authentication;
+    /**
+     * @var string
+     */
+    private $jiraApiUrn = '/rest/api/2';
 
     /**
      * @var ClientInterface
@@ -22,14 +25,26 @@ class JiraApi
     private $client;
 
     /**
-     * @param string $jiraBaseUri
+     * @param string $jiraBaseUrl
      * @param AuthenticationInterface $authentication
      */
-    public function __construct($jiraBaseUri, AuthenticationInterface $authentication)
+    public function __construct($jiraBaseUrl, AuthenticationInterface $authentication)
     {
-        $this->jiraBaseUri = trim($jiraBaseUri, '/');
-        $this->authentication = $authentication;
+        $this->jiraBaseUrl = trim($jiraBaseUrl, '/');
+        $this->client = new GuzzleClient($authentication, $this->getApiUri());
+    }
 
-        $this->client = new GuzzleClient();
+    /**
+     * @return string
+     */
+    private function getApiUri()
+    {
+        return sprintf('%s%s', $this->jiraBaseUrl, $this->jiraApiUrn);
+    }
+
+    public function issue()
+    {
+        $endpoint = new IssueEndpoint($this->client);
+        $response = $endpoint->getIssue('121212');
     }
 }

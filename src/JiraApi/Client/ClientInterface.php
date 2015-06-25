@@ -2,6 +2,7 @@
 
 namespace madmis\JiraApi\Client;
 
+use madmis\JiraApi\Authentication\AuthenticationInterface;
 use madmis\JiraApi\Exception\JiraApiExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -22,4 +23,15 @@ interface ClientInterface
      * @throws JiraApiExceptionInterface
      */
     public function send(RequestInterface $request, array $options = []);
+
+    /**
+     * Get jira api uri
+     * @return string
+     */
+    public function getApiUri();
+
+    /**
+     * @return AuthenticationInterface
+     */
+    public function getAuthentication();
 }
