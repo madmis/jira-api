@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use madmis\JiraApi\Client\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class AbstractEndpoint
@@ -36,6 +37,15 @@ abstract class AbstractEndpoint implements EndpointInterface
     {
         $path = $params ? implode('/', $params) : '';
 
-        return sprintf('%s%s%s', $this->client->getApiUri(), $this->baseUrn, $path);
+        return sprintf('%s%s/%s', $this->client->getApiUri(), $this->baseUrn, $path);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @return array
+     */
+    protected function processResponse(ResponseInterface $response)
+    {
+        return json_decode($response->getBody()->getContents(), true);
     }
 }

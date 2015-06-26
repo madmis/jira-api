@@ -23,5 +23,8 @@
         "psr-4" : {
             "madmis\\" : "src"
         }
+    },
+    "require-dev": {
+        "symfony/console": "^3.0@dev"
     }
 }

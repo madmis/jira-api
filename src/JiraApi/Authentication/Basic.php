@@ -51,4 +51,14 @@ class Basic implements AuthenticationInterface
     {
         return $this->password;
     }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return [
+            'Authorization' => 'Basic ' . $this->getCredential(),
+        ];
+    }
 }

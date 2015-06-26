@@ -22,4 +22,9 @@ interface AuthenticationInterface
      * @return string
      */
     public function getPassword();
+
+    /**
+     * @return array
+     */
+    public function getHeaders();
 }

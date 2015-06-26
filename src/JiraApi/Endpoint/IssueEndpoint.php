@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 use GuzzleHttp\Psr7\Request;
 use HttpLib\Http;
+use madmis\JiraApi\Exception\ClientException;
 
 /**
  * Class IssueEndpoint
@@ -33,14 +34,15 @@ class IssueEndpoint extends AbstractEndpoint
     /**
      * @param string $issueIdOrKey
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws ClientException
      */
     public function getIssue($issueIdOrKey)
     {
-        $headers = [
-            'Authorization' => 'Basic ' . $this->client->getAuthentication()->getCredential(),
-        ];
-
+        $headers = $this->client->getAuthentication()->getHeaders();
         $request = new Request(Http::METHOD_GET, $this->getApiUri([$issueIdOrKey]), $headers);
-        return $this->client->send($request);
+
+        return $this->processResponse(
+            $this->client->send($request)
+        );
     }
 }
