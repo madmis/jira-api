@@ -17,7 +17,8 @@
         "guzzlehttp/psr7": "^1.0@dev",
         "guzzlehttp/guzzle": "6.0.1",
         "kriswallsmith/buzz": "dev-master",
-        "httplib/http": "^1.0@dev"
+        "httplib/http": "^1.0@dev",
+        "jms/serializer": "^1.1@dev"
     },
     "autoload": {
         "psr-4" : {

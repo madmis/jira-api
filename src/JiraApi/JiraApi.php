@@ -2,11 +2,17 @@
 
 namespace madmis\JiraApi;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use madmis\JiraApi\Authentication\AuthenticationInterface;
 use madmis\JiraApi\Client\ClientInterface;
 use madmis\JiraApi\Client\GuzzleClient;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
+use madmis\JiraApi\Endpoint\ProjectEndpoint;
 
+/**
+ * Class JiraApi
+ * @package madmis\JiraApi
+ */
 class JiraApi
 {
     /**
@@ -47,6 +53,26 @@ class JiraApi
      */
     public function issue()
     {
-        return new IssueEndpoint($this->client);
+        static $endpoint = null;
+        if ($endpoint === null) {
+            $endpoint = new IssueEndpoint($this->client);
+        }
+
+        return $endpoint;
+    }
+
+    /**
+     * @return ProjectEndpoint
+     */
+    public function project()
+    {
+        static $endpoint = null;
+        if ($endpoint === null) {
+            $endpoint = new ProjectEndpoint($this->client);
+        }
+
+        return $endpoint;
     }
 }
+
+AnnotationRegistry::registerLoader('class_exists');
