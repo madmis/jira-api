@@ -1,4 +1,4 @@
-# IRA REST API PHP Client
+# JIRA REST API PHP Client
 
 # License
 
