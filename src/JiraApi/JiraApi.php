@@ -41,6 +41,14 @@ class JiraApi
     }
 
     /**
+     * @param ClientInterface $client
+     */
+    public function setClient(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
      * @return string
      */
     private function getApiUri()

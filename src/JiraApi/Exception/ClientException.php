@@ -1,6 +1,7 @@
 <?php
 
 namespace madmis\JiraApi\Exception;
+
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

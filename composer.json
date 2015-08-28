@@ -26,6 +26,7 @@
         }
     },
     "require-dev": {
-        "symfony/console": "^3.0@dev"
+        "symfony/console": "^3.0@dev",
+        "phpunit/phpunit": "4.7.*"
     }
 }
