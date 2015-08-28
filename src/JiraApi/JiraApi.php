@@ -8,6 +8,7 @@ use madmis\JiraApi\Client\ClientInterface;
 use madmis\JiraApi\Client\GuzzleClient;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
 use madmis\JiraApi\Endpoint\ProjectEndpoint;
+use madmis\JiraApi\Endpoint\UserEndpoint;
 
 /**
  * Class JiraApi
@@ -69,6 +70,19 @@ class JiraApi
         static $endpoint = null;
         if ($endpoint === null) {
             $endpoint = new ProjectEndpoint($this->client);
+        }
+
+        return $endpoint;
+    }
+
+    /**
+     * @return UserEndpoint
+     */
+    public function user()
+    {
+        static $endpoint = null;
+        if ($endpoint === null) {
+            $endpoint = new UserEndpoint($this->client);
         }
 
         return $endpoint;
