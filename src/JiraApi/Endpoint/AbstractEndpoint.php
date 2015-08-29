@@ -2,6 +2,7 @@
 
 namespace madmis\JiraApi\Endpoint;
 
+use GuzzleHttp\Psr7\Request;
 use JMS\Serializer\SerializerBuilder;
 use madmis\JiraApi\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -78,5 +79,36 @@ abstract class AbstractEndpoint implements EndpointInterface
     {
         $serializer = SerializerBuilder::create()->build();
         return $serializer->deserialize(json_encode($item), $className, 'json');
+    }
+
+    /**
+     * @param string $method Http::METHOD_
+     * @param string $uri
+     * @return Request
+     */
+    protected function createRequest($method, $uri)
+    {
+        $headers = [];
+        if ($this->client->getAuthentication()) {
+            $headers = $this->client->getAuthentication()->getHeaders();
+        }
+
+        return new Request($method, $uri, $headers);
+    }
+
+    /**
+     * @param string $method Http::METHOD_
+     * @param string $uri
+     * @param array $options Request options to apply to the given
+     *                                  request and to the transfer.
+     * @return array response
+     */
+    public function sendRequest($method, $uri, array $options = [])
+    {
+        $request = $this->createRequest($method, $uri);
+
+        return $this->processResponse(
+            $this->client->send($request, $options)
+        );
     }
 }

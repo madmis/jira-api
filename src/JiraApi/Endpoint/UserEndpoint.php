@@ -2,8 +2,6 @@
 
 namespace madmis\JiraApi\Endpoint;
 
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
 use HttpLib\Http;
 use madmis\JiraApi\Model\User;
 
@@ -24,18 +22,7 @@ class UserEndpoint extends AbstractEndpoint
      */
     public function getUserByName($username, $mapping = false)
     {
-        $headers = $this->client->getAuthentication()->getHeaders();
-        $request = new Request(Http::METHOD_GET, $this->getApiUri(), $headers);
-
-        $response = $this->processResponse(
-            $this->client->send($request, ['query' => ['username' => $username]])
-        );
-
-        if ($mapping) {
-            $response = $this->deserializeItem($response, $this->userClass);
-        }
-
-        return $response;
+        return $this->getUser(['username' => $username], $mapping);
     }
 
     /**
@@ -45,12 +32,18 @@ class UserEndpoint extends AbstractEndpoint
      */
     public function getUserByKey($userKey, $mapping = false)
     {
-        $headers = $this->client->getAuthentication()->getHeaders();
-        $request = new Request(Http::METHOD_GET, $this->getApiUri(), $headers);
+        return $this->getUser(['key' => $userKey], $mapping);
+    }
 
-        $response = $this->processResponse(
-            $this->client->send($request, ['query' => ['key' => $userKey]])
-        );
+    /**
+     * @param array $params
+     * @param bool $mapping
+     * @return array|User[]
+     */
+    private function getUser(array $params, $mapping = false)
+    {
+        $options = ['query' => $params];
+        $response = $this->sendRequest(Http::METHOD_GET, $this->getApiUri(), $options);
 
         if ($mapping) {
             $response = $this->deserializeItem($response, $this->userClass);

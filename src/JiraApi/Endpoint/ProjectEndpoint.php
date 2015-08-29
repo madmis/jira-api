@@ -2,9 +2,7 @@
 
 namespace madmis\JiraApi\Endpoint;
 
-use GuzzleHttp\Psr7\Request;
 use HttpLib\Http;
-use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Model\Project;
 
 /**
@@ -18,17 +16,14 @@ class ProjectEndpoint extends AbstractEndpoint
     protected $projectClass = 'madmis\JiraApi\Model\Project';
 
     /**
+     * @param string $expand
      * @param bool $mapping mapping response items to objects
      * @return array|Project[]
      */
-    public function getProjects($mapping = false)
+    public function getProjects($expand = '', $mapping = false)
     {
-        $headers = $this->client->getAuthentication()->getHeaders();
-        $request = new Request(Http::METHOD_GET, $this->getApiUri(), $headers);
-
-        $response = $this->processResponse(
-            $this->client->send($request)
-        );
+        $options = ['query' => ['expand' => $expand]];
+        $response = $this->sendRequest(Http::METHOD_GET, $this->getApiUri(), $options);
 
         if ($mapping) {
             $response = $this->deserializeItems($response, $this->projectClass);
@@ -39,18 +34,14 @@ class ProjectEndpoint extends AbstractEndpoint
 
     /**
      * @param string $projectIdOrKey
+     * @param string $expand
      * @param bool $mapping mapping response to object
      * @return array|Project
-     * @throws ClientException
      */
-    public function getProject($projectIdOrKey, $mapping = false)
+    public function getProject($projectIdOrKey, $expand = '', $mapping = false)
     {
-        $headers = $this->client->getAuthentication()->getHeaders();
-        $request = new Request(Http::METHOD_GET, $this->getApiUri([$projectIdOrKey]), $headers);
-
-        $response = $this->processResponse(
-            $this->client->send($request)
-        );
+        $options = ['query' => ['expand' => $expand]];
+        $response = $this->sendRequest(Http::METHOD_GET, $this->getApiUri([$projectIdOrKey]), $options);
 
         if ($mapping) {
             $response = $this->deserializeItem($response, $this->projectClass);

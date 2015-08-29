@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use madmis\JiraApi\Authentication\AuthenticationInterface;
 use madmis\JiraApi\Client\ClientInterface;
 use madmis\JiraApi\Client\GuzzleClient;
+use madmis\JiraApi\Endpoint\EndpointFactory;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
 use madmis\JiraApi\Endpoint\ProjectEndpoint;
 use madmis\JiraApi\Endpoint\UserEndpoint;
@@ -32,6 +33,11 @@ class JiraApi
     private $client;
 
     /**
+     * @var EndpointFactory
+     */
+    private $endpointFactory;
+
+    /**
      * @param string $jiraBaseUrl
      * @param AuthenticationInterface $authentication
      */
@@ -39,6 +45,8 @@ class JiraApi
     {
         $this->jiraBaseUrl = trim($jiraBaseUrl, '/');
         $this->client = new GuzzleClient($authentication, $this->getApiUri());
+
+        $this->endpointFactory = new EndpointFactory();
     }
 
     /**
@@ -62,12 +70,7 @@ class JiraApi
      */
     public function issue()
     {
-        static $endpoint = null;
-        if ($endpoint === null) {
-            $endpoint = new IssueEndpoint($this->client);
-        }
-
-        return $endpoint;
+        return $this->endpointFactory->getEndpoint('issue', $this->client);
     }
 
     /**
@@ -75,12 +78,7 @@ class JiraApi
      */
     public function project()
     {
-        static $endpoint = null;
-        if ($endpoint === null) {
-            $endpoint = new ProjectEndpoint($this->client);
-        }
-
-        return $endpoint;
+        return $this->endpointFactory->getEndpoint('project', $this->client);
     }
 
     /**
@@ -88,12 +86,7 @@ class JiraApi
      */
     public function user()
     {
-        static $endpoint = null;
-        if ($endpoint === null) {
-            $endpoint = new UserEndpoint($this->client);
-        }
-
-        return $endpoint;
+        return $this->endpointFactory->getEndpoint('user', $this->client);
     }
 }
 

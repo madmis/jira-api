@@ -293,7 +293,7 @@ class Issue
     }
 
     /**
-     * @return User
+     * @return User|null
      */
     public function getAssignee()
     {
@@ -301,9 +301,9 @@ class Issue
     }
 
     /**
-     * @param User $assignee
+     * @param User|null $assignee
      */
-    public function setAssignee(User $assignee)
+    public function setAssignee(User $assignee = null)
     {
         $this->assignee = $assignee;
     }
