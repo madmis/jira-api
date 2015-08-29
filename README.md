@@ -59,7 +59,7 @@ class madmis\JiraApi\Model\Issue {
 
 ````
 ###Error handling
-When send request by client - all erros wrapped to custom exception *madmis\JiraApi\Exception\ClientException*  
+When send request by client - all erros wrapped to custom exception **madmis\JiraApi\Exception\ClientException**  
 
 ````php
 class madmis\JiraApi\Exception\ClientException {
@@ -70,7 +70,7 @@ class madmis\JiraApi\Exception\ClientException {
 }
 ````
 
-*ClientException* contain original *request object* and *response object* if response available
+**ClientException** contain original **request object** and **response object** if response available
  
 ````php
 class madmis\JiraApi\Exception\ClientException {
@@ -85,3 +85,12 @@ class madmis\JiraApi\Exception\ClientException {
 }
 ````
 
+So, to handle errors use try/catch
+
+````php
+try {
+    $issue = $api->issue()->getIssue('MFTP-4');
+} catch (madmis\JiraApi\Exception\ClientException $ex) {
+    // any actions (log error, send email, ...) 
+}
+````
