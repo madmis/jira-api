@@ -44,7 +44,7 @@ array [
 $issue = $api->issue()->getIssue('MFTP-4', '*all', '', true);
 
 // Result
-class madmis\JiraApi\Model\Issue#170 {
+class madmis\JiraApi\Model\Issue {
     protected $self => "http://localhost:8080/rest/api/2/issue/10003"
     protected $id => 10003
     protected $key => "MFTP-4"
@@ -62,10 +62,10 @@ class madmis\JiraApi\Model\Issue#170 {
 When send request by client - all erros wrapped to custom exception *madmis\JiraApi\Exception\ClientException*  
 
 ````php
-class madmis\JiraApi\Exception\ClientException#73 {
-  private $request => class GuzzleHttp\Psr7\Request#61
+class madmis\JiraApi\Exception\ClientException {
+  private $request => class GuzzleHttp\Psr7\Request
   private $response => NULL
-  protected $message => string(130) "cURL error 7: Failed to connect to 127.0.0.1 port 8080: Connection refused (see http://curl.haxx.se/libcurl/c/libcurl-errors.html)"
+  protected $message => "cURL error 7: Failed to connect to 127.0.0.1 port 8080: Connection refused (see http://curl.haxx.se/libcurl/c/libcurl-errors.html)"
   ...
 }
 ````
@@ -73,9 +73,9 @@ class madmis\JiraApi\Exception\ClientException#73 {
 *ClientException* contain original *request object* and *response object* if response available
  
 ````php
-class madmis\JiraApi\Exception\ClientException#73 {
-  private $request => class GuzzleHttp\Psr7\Request#61 
-  private $response => class GuzzleHttp\Psr7\Response#76 {
+class madmis\JiraApi\Exception\ClientException {
+  private $request => class GuzzleHttp\Psr7\Request 
+  private $response => class GuzzleHttp\Psr7\Response {
     private $reasonPhrase => "Unauthorized"
     private $statusCode => 401
     ...
