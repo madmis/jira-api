@@ -1,5 +1,9 @@
 # JIRA REST API PHP Client
 
+JIRA provides REST APIs that you can use to interact with JIRA programmatically.
+This API client will help you interact with JIRA by REST API. 
+ 
+
 # License
 
 MIT License
