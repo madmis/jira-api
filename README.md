@@ -1,5 +1,7 @@
 # JIRA REST API PHP Client
 
+[![Build Status](https://secure.travis-ci.org/madmis/jira-api.png)](http://travis-ci.org/madmis/jira-api)
+
 JIRA provides REST APIs that you can use to interact with JIRA programmatically.
 This API client will help you interact with JIRA by REST API. 
  
