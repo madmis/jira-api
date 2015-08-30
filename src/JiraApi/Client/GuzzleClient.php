@@ -9,12 +9,16 @@ use madmis\JiraApi\Exception\ClientException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class GuzzleClient
+ * @package madmis\JiraApi\Client
+ */
 class GuzzleClient extends Client implements ClientInterface
 {
     /**
      * @var string
      */
-    private $apiUri;
+    private $jiraApiUrn;
 
     /**
      * @var AuthenticationInterface
@@ -22,14 +26,22 @@ class GuzzleClient extends Client implements ClientInterface
     private $authentication;
 
     /**
-     * @param AuthenticationInterface $authentication
-     * @param string $apiUri
+     * @var array
      */
-    public function __construct(AuthenticationInterface $authentication, $apiUri)
+    private $options;
+
+    /**
+     * @param string $jiraBaseUri example: http://localhost:8080
+     * @param string $jiraApiUrn example: /rest/api/2
+     * @param array $options extra parameters
+     */
+    public function __construct($jiraBaseUri, $jiraApiUrn, array $options)
     {
-        parent::__construct();
-        $this->authentication = $authentication;
-        $this->apiUri = $apiUri;
+        parent::__construct([
+            'base_uri' => trim($jiraBaseUri, '/')
+        ]);
+        $this->jiraApiUrn = $jiraApiUrn;
+        $this->options = $options;
     }
 
     /**
@@ -52,19 +64,36 @@ class GuzzleClient extends Client implements ClientInterface
     }
 
     /**
-     * Get jira api uri
+     * Get jira api urn (example: /rest/api/2)
      * @return string
      */
-    public function getApiUri()
+    public function getApiUrn()
     {
-        return $this->apiUri;
+        return $this->jiraApiUrn;
     }
 
     /**
-     * @return AuthenticationInterface
+     * @return AuthenticationInterface|null
      */
     public function getAuthentication()
     {
         return $this->authentication;
+    }
+
+    /**
+     * @param AuthenticationInterface $authentication
+     */
+    public function setAuthentication(AuthenticationInterface $authentication)
+    {
+        $this->authentication = $authentication;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed null if option doesn't exists
+     */
+    public function getOption($name)
+    {
+        return isset($this->options[$name]) ? $this->options[$name] : null;
     }
 }

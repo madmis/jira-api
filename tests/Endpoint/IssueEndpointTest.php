@@ -9,9 +9,9 @@ class IssueEndpointTest extends \PHPUnit_Framework_TestCase
     {
         $api = new JiraApi(
             'http://localhost:8080',
-            new Basic('user', 'password')
+            '/rest/api/2'
         );
 
-        $this->assertEquals($api->issue()->getApiUri(), 'http://localhost:8080/rest/api/2/issue/');
+        $this->assertEquals('/rest/api/2/issue/', $api->issue()->getApiUrn());
     }
 }

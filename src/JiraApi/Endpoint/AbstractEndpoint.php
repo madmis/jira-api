@@ -40,11 +40,11 @@ abstract class AbstractEndpoint implements EndpointInterface
      * @param array $params
      * @return string
      */
-    public function getApiUri(array $params = [])
+    public function getApiUrn(array $params = [])
     {
         $path = $params ? implode('/', $params) : '';
 
-        return sprintf('%s%s/%s', $this->client->getApiUri(), $this->baseUrn, $path);
+        return sprintf('%s%s/%s', $this->client->getApiUrn(), $this->baseUrn, $path);
     }
 
     /**

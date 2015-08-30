@@ -13,8 +13,6 @@ class UserEndpoint extends AbstractEndpoint
 {
     protected $baseUrn = '/user';
 
-    protected $userClass = 'madmis\JiraApi\Model\User';
-
     /**
      * @param string $username
      * @param bool $mapping mapping response items to objects
@@ -43,10 +41,10 @@ class UserEndpoint extends AbstractEndpoint
     private function getUser(array $params, $mapping = false)
     {
         $options = ['query' => $params];
-        $response = $this->sendRequest(Http::METHOD_GET, $this->getApiUri(), $options);
+        $response = $this->sendRequest(Http::METHOD_GET, $this->getApiUrn(), $options);
 
         if ($mapping) {
-            $response = $this->deserializeItem($response, $this->userClass);
+            $response = $this->deserializeItem($response, User::class);
         }
 
         return $response;

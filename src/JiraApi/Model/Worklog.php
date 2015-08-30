@@ -65,7 +65,7 @@ class Worklog
 
     /**
      * @Type("string")
-     * @SerializedName("updateAuthor")
+     * @SerializedName("timeSpent")
      * @var string
      */
     protected $timeSpent;

@@ -16,9 +16,9 @@
         "php": ">=5.5.0",
         "guzzlehttp/psr7": "^1.2",
         "guzzlehttp/guzzle": "^6.0",
-        "kriswallsmith/buzz": "^0.15.0",
-        "httplib/http": "^1.0",
-        "jms/serializer": "^1.0"
+        "httplib/http": "1.0.2",
+        "jms/serializer": "^1.0",
+        "symfony/options-resolver": "^2.7"
     },
     "autoload": {
         "psr-4" : {

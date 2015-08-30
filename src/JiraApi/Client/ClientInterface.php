@@ -28,10 +28,16 @@ interface ClientInterface
      * Get jira api uri
      * @return string
      */
-    public function getApiUri();
+    public function getApiUrn();
 
     /**
      * @return AuthenticationInterface
      */
     public function getAuthentication();
+
+    /**
+     * @param string $name
+     * @return mixed null if option doesn't exists
+     */
+    public function getOption($name);
 }

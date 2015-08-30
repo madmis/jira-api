@@ -9,7 +9,9 @@ use madmis\JiraApi\Client\GuzzleClient;
 use madmis\JiraApi\Endpoint\EndpointFactory;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
 use madmis\JiraApi\Endpoint\ProjectEndpoint;
+use madmis\JiraApi\Endpoint\TempoEndpoint;
 use madmis\JiraApi\Endpoint\UserEndpoint;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class JiraApi
@@ -17,16 +19,6 @@ use madmis\JiraApi\Endpoint\UserEndpoint;
  */
 class JiraApi
 {
-    /**
-     * @var string
-     */
-    private $jiraBaseUrl;
-
-    /**
-     * @var string
-     */
-    private $jiraApiUrn = '/rest/api/2';
-
     /**
      * @var ClientInterface
      */
@@ -38,15 +30,27 @@ class JiraApi
     private $endpointFactory;
 
     /**
-     * @param string $jiraBaseUrl
-     * @param AuthenticationInterface $authentication
+     * @param string $jiraBaseUri example: http://localhost:8080
+     * @param string $jiraApiUrn example: /rest/api/2
+     * @param array $options extra parameters
      */
-    public function __construct($jiraBaseUrl, AuthenticationInterface $authentication)
+    public function __construct($jiraBaseUri, $jiraApiUrn, array $options = [])
     {
-        $this->jiraBaseUrl = trim($jiraBaseUrl, '/');
-        $this->client = new GuzzleClient($authentication, $this->getApiUri());
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
 
+        $this->client = new GuzzleClient($jiraBaseUri, $jiraApiUrn, $resolver->resolve($options));
         $this->endpointFactory = new EndpointFactory();
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'tempo_timesheets_urn' => '/rest/tempo-timesheets/3',
+        ]);
     }
 
     /**
@@ -58,11 +62,11 @@ class JiraApi
     }
 
     /**
-     * @return string
+     * @param AuthenticationInterface $authentication
      */
-    private function getApiUri()
+    public function setAuthentication(AuthenticationInterface $authentication)
     {
-        return sprintf('%s%s', $this->jiraBaseUrl, $this->jiraApiUrn);
+        $this->client->setAuthentication($authentication);
     }
 
     /**
@@ -87,6 +91,14 @@ class JiraApi
     public function user()
     {
         return $this->endpointFactory->getEndpoint('user', $this->client);
+    }
+
+    /**
+     * @return TempoEndpoint
+     */
+    public function tempo()
+    {
+        return $this->endpointFactory->getEndpoint('tempo', $this->client);
     }
 }
 
