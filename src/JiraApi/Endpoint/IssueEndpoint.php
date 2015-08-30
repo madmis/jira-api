@@ -120,4 +120,102 @@ class IssueEndpoint extends AbstractEndpoint
 
         return $response;
     }
+
+    public function editIssue($issueKey, $params)
+    {
+        return $this->api(self::REQUEST_PUT, sprintf("/rest/api/2/issue/%s", $issueKey), $params);
+    }
+
+    /**
+     * add a comment to a ticket
+     *
+     * issue key should be YOURPROJ-221
+     *
+     * @param $issueKey
+     * @param $params
+     * @return mixed
+     */
+    public function addComment($issueKey, $params)
+    {
+        if (is_string($params)) {
+            // if $params is scalar string value -> wrapping it properly
+            $params = array(
+                'body' => $params
+            );
+        }
+        return $this->api(self::REQUEST_POST, sprintf("/rest/api/2/issue/%s/comment", $issueKey), $params);
+    }
+
+    /**
+     * create an issue.
+     *
+     * @param $projectKey
+     * @param $summary
+     * @param $issueType
+     * @param array $options
+     * @return mixed
+     */
+    public function createIssue($projectKey, $summary, $issueType, $options = array())
+    {
+        $default = array(
+            "project" => array(
+                "key" => $projectKey,
+            ),
+            "summary" => $summary,
+            "issuetype" => array(
+                "id" => $issueType,
+            )
+        );
+        $default = array_merge($default, $options);
+        $result = $this->api(
+            self::REQUEST_POST,
+            "/rest/api/2/issue/",
+            array(
+                "fields" => $default
+            )
+        );
+        return $result;
+    }
+
+    /**
+     * TODO: new endpoint
+     * query issues
+     *
+     * @param $jql
+     * @param $startAt
+     * @param $maxResult
+     * @param string $fields
+     *
+     * @return Jira_API_Result
+     */
+    public function search($jql, $startAt = 0, $maxResult = 20, $fields = '*navigable')
+    {
+        $result = $this->api(
+            self::REQUEST_GET,
+            "/rest/api/2/search",
+            array(
+                "jql" => $jql,
+                "startAt" => $startAt,
+                "maxResults" => $maxResult,
+                "fields" => $fields,
+            )
+        );
+        return $result;
+    }
+
+    /**
+     * set watchers in a ticket
+     *
+     * @param $issueKey
+     * @param $watchers
+     * @return mixed
+     */
+    public function setWatchers($issueKey, $watchers)
+    {
+        $result = array();
+        foreach ($watchers as $w) {
+            $result[] = $this->api(self::REQUEST_POST, sprintf("/rest/api/2/issue/%s/watchers", $issueKey), $w);
+        }
+        return $result;
+    }
 }

@@ -9,6 +9,7 @@ use madmis\JiraApi\Client\GuzzleClient;
 use madmis\JiraApi\Endpoint\AttachmentEndpoint;
 use madmis\JiraApi\Endpoint\EndpointFactory;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
+use madmis\JiraApi\Endpoint\IssueTypeEndpoint;
 use madmis\JiraApi\Endpoint\ProjectEndpoint;
 use madmis\JiraApi\Endpoint\TempoEndpoint;
 use madmis\JiraApi\Endpoint\UserEndpoint;
@@ -100,6 +101,14 @@ class JiraApi
     public function attachment()
     {
         return $this->endpointFactory->getEndpoint('attachment', $this->client);
+    }
+
+    /**
+     * @return IssueTypeEndpoint
+     */
+    public function issueType()
+    {
+        return $this->endpointFactory->getEndpoint('issueType', $this->client);
     }
 
     /**
