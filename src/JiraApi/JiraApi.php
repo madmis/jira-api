@@ -65,6 +65,14 @@ class JiraApi
     }
 
     /**
+     * @return ClientInterface
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * @param AuthenticationInterface $authentication
      */
     public function setAuthentication(AuthenticationInterface $authentication)

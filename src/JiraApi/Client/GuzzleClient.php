@@ -31,6 +31,16 @@ class GuzzleClient extends Client implements ClientInterface
     private $options;
 
     /**
+     * @var RequestInterface
+     */
+    private $lastRequest;
+
+    /**
+     * @var ResponseInterface
+     */
+    private $lastResponse;
+
+    /**
      * @param string $jiraBaseUri example: http://localhost:8080
      * @param string $jiraApiUrn example: /rest/api/2
      * @param array $options extra parameters
@@ -54,11 +64,16 @@ class GuzzleClient extends Client implements ClientInterface
     {
         try {
             /** @var ResponseInterface $response */
+
             $response = parent::send($request, $options);
         } catch (RequestException $ex) {
+            $this->lastRequest = $ex->getRequest();
+            $this->lastResponse = $ex->getResponse();
             $exception = new ClientException($ex, $ex->getRequest(), $ex->getResponse());
             throw $exception;
         }
+        $this->lastRequest = $request;
+        $this->lastResponse = $response;
 
         return $response;
     }
@@ -96,4 +111,21 @@ class GuzzleClient extends Client implements ClientInterface
     {
         return isset($this->options[$name]) ? $this->options[$name] : null;
     }
+
+    /**
+     * @return RequestInterface
+     */
+    public function getLastRequest()
+    {
+        return $this->lastRequest;
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getLastResponse()
+    {
+        return $this->lastResponse;
+    }
+
 }

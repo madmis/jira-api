@@ -1,0 +1,14 @@
+default:
+    autoload:
+        '': %paths.base%/tests/features/bootstrap/
+    suites:
+        default:
+            paths: [ %paths.base%/tests/features ]
+            contexts:
+                - FeatureContext:
+                    jiraBaseUri: http://localhost:8080
+                    jiraApiUrn: /rest/api/2
+                    jiraUsername: dmac
+                    jiraUserPass: dmac
+                    options:
+                        tempo_timesheets_urn: /rest/tempo-timesheets/3

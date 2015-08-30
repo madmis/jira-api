@@ -40,4 +40,14 @@ interface ClientInterface
      * @return mixed null if option doesn't exists
      */
     public function getOption($name);
+
+    /**
+     * @return RequestInterface
+     */
+    public function getLastRequest();
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getLastResponse();
 }

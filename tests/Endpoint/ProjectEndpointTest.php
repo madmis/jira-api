@@ -1,6 +1,5 @@
 <?php
 
-use madmis\JiraApi\Authentication\Basic;
 use madmis\JiraApi\JiraApi;
 
 class ProjectEndpointTest extends \PHPUnit_Framework_TestCase
