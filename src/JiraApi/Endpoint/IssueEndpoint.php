@@ -61,6 +61,56 @@ class IssueEndpoint extends AbstractEndpoint
     }
 
     /**
+     * Edits an issue
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#d2e2563}
+     *  - {@link https://developer.atlassian.com/jiradev/jira-apis/jira-rest-apis/jira-rest-api-tutorials/jira-rest-api-example-edit-issues}
+     * @param string $issueIdOrKey
+     * @param array $params
+     * @return void
+     */
+    public function editIssue($issueIdOrKey, array $params)
+    {
+        $options = ['json' => $params];
+
+        $urn = $this->getApiUrn([$issueIdOrKey]);
+
+        $this->sendRequest(Http::METHOD_PUT, $urn, $options);
+    }
+
+
+    /**
+     * Creates an issue or a sub-task
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#d2e2279}
+     *  - {@link https://developer.atlassian.com/jiradev/jira-apis/jira-rest-apis/jira-rest-api-tutorials/jira-rest-api-example-create-issue}
+     * @param string $projectKey
+     * @param string $summary
+     * @param int $issueTypeId
+     * @param array $options
+     * @param bool $mapping mapping response to object
+     * @return array|Issue
+     */
+    public function createIssue($projectKey, $summary, $issueTypeId, $options = [], $mapping = false)
+    {
+        $options = array_merge($options, [
+            'fields' => [
+                'project' => ['key' => $projectKey],
+                'summary' => $summary,
+                'issuetype' => ['id' => $issueTypeId]
+            ]
+        ]);
+
+        $response = $this->sendRequest(Http::METHOD_POST, $this->getApiUrn(), ['json' => $options]);
+
+        if ($mapping) {
+            $response = $this->deserializeItem($response, Issue::class);
+        }
+
+        return $response;
+    }
+
+    /**
      * Get issue worklog
      * @param string $issueIdOrKey
      * @param string $expand
@@ -121,101 +171,42 @@ class IssueEndpoint extends AbstractEndpoint
         return $response;
     }
 
-    public function editIssue($issueKey, $params)
+
+    /**
+     * Adds a user to an issue's watcher list.
+     * @param string $issueIdOrKey
+     * @param string $watcher username
+     * @return void
+     */
+    public function setWatcher($issueIdOrKey, $watcher)
     {
-        return $this->api(self::REQUEST_PUT, sprintf("/rest/api/2/issue/%s", $issueKey), $params);
+        $urn = $this->getApiUrn([$issueIdOrKey, 'watchers']);
+
+        $this->sendRequest(Http::METHOD_POST, $urn, ['json' => $watcher]);
     }
 
     /**
-     * add a comment to a ticket
+     * Adds a new comment to an issue
      *
-     * issue key should be YOURPROJ-221
-     *
-     * @param $issueKey
-     * @param $params
-     * @return mixed
+     * @param string $issueIdOrKey
+     * @param string $comment
+     * @param array $visibility Example: ["type" => "role", "value" => "Administrators"]
+     * @param string $expand optional flags: renderedBody (provides body rendered in HTML)
+     * @return array
      */
-    public function addComment($issueKey, $params)
+    public function addComment($issueIdOrKey, $comment, $visibility = [], $expand = '')
     {
-        if (is_string($params)) {
-            // if $params is scalar string value -> wrapping it properly
-            $params = array(
-                'body' => $params
-            );
+        $options = [
+            'json' => ['body' => $comment],
+            'query' => $expand,
+        ];
+
+        if ($visibility) {
+            $options['json']['visibility'] = $visibility;
         }
-        return $this->api(self::REQUEST_POST, sprintf("/rest/api/2/issue/%s/comment", $issueKey), $params);
-    }
 
-    /**
-     * create an issue.
-     *
-     * @param $projectKey
-     * @param $summary
-     * @param $issueType
-     * @param array $options
-     * @return mixed
-     */
-    public function createIssue($projectKey, $summary, $issueType, $options = array())
-    {
-        $default = array(
-            "project" => array(
-                "key" => $projectKey,
-            ),
-            "summary" => $summary,
-            "issuetype" => array(
-                "id" => $issueType,
-            )
-        );
-        $default = array_merge($default, $options);
-        $result = $this->api(
-            self::REQUEST_POST,
-            "/rest/api/2/issue/",
-            array(
-                "fields" => $default
-            )
-        );
-        return $result;
-    }
+        $urn = $this->getApiUrn([$issueIdOrKey, 'comment']);
 
-    /**
-     * TODO: new endpoint
-     * query issues
-     *
-     * @param $jql
-     * @param $startAt
-     * @param $maxResult
-     * @param string $fields
-     *
-     * @return Jira_API_Result
-     */
-    public function search($jql, $startAt = 0, $maxResult = 20, $fields = '*navigable')
-    {
-        $result = $this->api(
-            self::REQUEST_GET,
-            "/rest/api/2/search",
-            array(
-                "jql" => $jql,
-                "startAt" => $startAt,
-                "maxResults" => $maxResult,
-                "fields" => $fields,
-            )
-        );
-        return $result;
-    }
-
-    /**
-     * set watchers in a ticket
-     *
-     * @param $issueKey
-     * @param $watchers
-     * @return mixed
-     */
-    public function setWatchers($issueKey, $watchers)
-    {
-        $result = array();
-        foreach ($watchers as $w) {
-            $result[] = $this->api(self::REQUEST_POST, sprintf("/rest/api/2/issue/%s/watchers", $issueKey), $w);
-        }
-        return $result;
+        return $this->sendRequest(Http::METHOD_POST, $urn, $options);
     }
 }

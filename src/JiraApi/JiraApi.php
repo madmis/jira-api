@@ -11,6 +11,7 @@ use madmis\JiraApi\Endpoint\EndpointFactory;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
 use madmis\JiraApi\Endpoint\IssueTypeEndpoint;
 use madmis\JiraApi\Endpoint\ProjectEndpoint;
+use madmis\JiraApi\Endpoint\SearchEndpoint;
 use madmis\JiraApi\Endpoint\TempoEndpoint;
 use madmis\JiraApi\Endpoint\UserEndpoint;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -109,6 +110,14 @@ class JiraApi
     public function issueType()
     {
         return $this->endpointFactory->getEndpoint('issueType', $this->client);
+    }
+
+    /**
+     * @return SearchEndpoint
+     */
+    public function search()
+    {
+        return $this->endpointFactory->getEndpoint('search', $this->client);
     }
 
     /**

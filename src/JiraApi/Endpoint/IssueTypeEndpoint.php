@@ -23,7 +23,7 @@ class IssueTypeEndpoint extends AbstractEndpoint
         $response = $this->sendRequest(Http::METHOD_GET, $this->getApiUrn());
 
         if ($mapping) {
-            $response = $this->deserializeItem($response, IssueType::class);
+            $response = $this->deserializeItems($response, IssueType::class);
         }
 
         return $response;
