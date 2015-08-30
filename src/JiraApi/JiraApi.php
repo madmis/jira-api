@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use madmis\JiraApi\Authentication\AuthenticationInterface;
 use madmis\JiraApi\Client\ClientInterface;
 use madmis\JiraApi\Client\GuzzleClient;
+use madmis\JiraApi\Endpoint\AttachmentEndpoint;
 use madmis\JiraApi\Endpoint\EndpointFactory;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
 use madmis\JiraApi\Endpoint\ProjectEndpoint;
@@ -70,14 +71,6 @@ class JiraApi
     }
 
     /**
-     * @return IssueEndpoint
-     */
-    public function issue()
-    {
-        return $this->endpointFactory->getEndpoint('issue', $this->client);
-    }
-
-    /**
      * @return ProjectEndpoint
      */
     public function project()
@@ -91,6 +84,22 @@ class JiraApi
     public function user()
     {
         return $this->endpointFactory->getEndpoint('user', $this->client);
+    }
+
+    /**
+     * @return IssueEndpoint
+     */
+    public function issue()
+    {
+        return $this->endpointFactory->getEndpoint('issue', $this->client);
+    }
+
+    /**
+     * @return AttachmentEndpoint
+     */
+    public function attachment()
+    {
+        return $this->endpointFactory->getEndpoint('attachment', $this->client);
     }
 
     /**
