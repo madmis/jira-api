@@ -149,16 +149,16 @@ class madmis\JiraApi\Exception\ClientException {
 **ClientException** contains original **request object** and **response object** if response available
 
 ```php
-//class madmis\JiraApi\Exception\ClientException {
-//  private $request => class GuzzleHttp\Psr7\Request 
-//  private $response => class GuzzleHttp\Psr7\Response {
-//    private $reasonPhrase => "Unauthorized"
-//    private $statusCode => 401
-//    ...
-//  }
-//  protected $message => "Client error: 401"
-//  ...  
-//}
+class madmis\JiraApi\Exception\ClientException {
+  private $request => class GuzzleHttp\Psr7\Request 
+  private $response => class GuzzleHttp\Psr7\Response {
+    private $reasonPhrase => "Unauthorized"
+    private $statusCode => 401
+    ...
+  }
+  protected $message => "Client error: 401"
+  ...  
+}
 ```
 
 So, to handle errors use try/catch
