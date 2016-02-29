@@ -14,6 +14,9 @@ MIT License
 
 https://docs.atlassian.com/jira/REST/latest/
 
+# Contributing
+To create new endpoint - [create issue](https://github.com/madmis/jira-api/issues/new) or [create pull request](https://github.com/madmis/jira-api/compare)
+
 # Install
     
     composer require madmis/jira-api 1.0.*
