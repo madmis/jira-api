@@ -23,6 +23,7 @@ To create new endpoint - [create issue](https://github.com/madmis/jira-api/issue
 
 # Usage
 
+```php
     $api = new madmis\JiraApi\JiraApi('http://localhost:8080/', '/rest/api/2');
     
     $auth = new madmis\JiraApi\Authentication\Basic('email@test.com', 'password');
@@ -42,44 +43,47 @@ To create new endpoint - [create issue](https://github.com/madmis/jira-api/issue
       'key' => "MFTP-4"
       'fields' => { ... }
     ]
+```
 
 ###Create Issue
 
-    $api = new madmis\JiraApi\JiraApi('http://localhost:8080/', '/rest/api/2');
-    
-    $auth = new madmis\JiraApi\Authentication\Basic('email@test.com', 'password');
-    $api->setAuthentication($auth);
+```php
+$api = new madmis\JiraApi\JiraApi('http://localhost:8080/', '/rest/api/2');
 
-    // without mapping
-    $result = $api->issue()->createIssue('PROJ', 'summary', 1, ['description' => 'description']);
+$auth = new madmis\JiraApi\Authentication\Basic('email@test.com', 'password');
+$api->setAuthentication($auth);
 
-    // Issue result
-    array [
-      'id' => "10105"
-      'key' => "PROJ-9"
-      'self' => "http://127.0.0.1:8080/rest/api/2/issue/10105"
-    ]
+// without mapping
+$result = $api->issue()->createIssue('PROJ', 'summary', 1, ['description' => 'description']);
 
-    // with mapping
-    $result = $api->issue()->createIssue('PROJ', 'summary', 1, ['description' => 'description'], true);
-    
-    // Issue result
-    class madmis\JiraApi\Model\Issue {
-      protected $self => "http://127.0.0.1:8080/rest/api/2/issue/10104"
-      protected $id => 10104
-      protected $key => "PROJ-8"
-      protected $labels => []
-      protected $description => NULL
-      protected $summary => NULL
-      protected $updated => NULL
-      protected $created => NULL
-      protected $issueType => NULL
-      protected $project => NULL
-      protected $creator => NULL
-      protected $reporter => NULL
-      protected $assignee => NULL
-      protected $status => NULL
-    }
+// Issue result
+array [
+  'id' => "10105"
+  'key' => "PROJ-9"
+  'self' => "http://127.0.0.1:8080/rest/api/2/issue/10105"
+]
+
+// with mapping
+$result = $api->issue()->createIssue('PROJ', 'summary', 1, ['description' => 'description'], true);
+
+// Issue result
+class madmis\JiraApi\Model\Issue {
+  protected $self => "http://127.0.0.1:8080/rest/api/2/issue/10104"
+  protected $id => 10104
+  protected $key => "PROJ-8"
+  protected $labels => []
+  protected $description => NULL
+  protected $summary => NULL
+  protected $updated => NULL
+  protected $created => NULL
+  protected $issueType => NULL
+  protected $project => NULL
+  protected $creator => NULL
+  protected $reporter => NULL
+  protected $assignee => NULL
+  protected $status => NULL
+}
+```
 
 ###Tempo worklog (Tempo timesheets)
 
