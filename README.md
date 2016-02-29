@@ -129,7 +129,7 @@ To create new endpoint - [create issue](https://github.com/madmis/jira-api/issue
       }
 
 ###Error handling
-When send request by client - all erros wrapped to custom exception **madmis\JiraApi\Exception\ClientException**  
+Each client request errors wrapped to custom exception **madmis\JiraApi\Exception\ClientException**  
 
     class madmis\JiraApi\Exception\ClientException {
       private $request => class GuzzleHttp\Psr7\Request
@@ -139,7 +139,7 @@ When send request by client - all erros wrapped to custom exception **madmis\Jir
     }
 
 
-**ClientException** contain original **request object** and **response object** if response available
+**ClientException** contains original **request object** and **response object** if response available
  
     class madmis\JiraApi\Exception\ClientException {
       private $request => class GuzzleHttp\Psr7\Request 
@@ -160,3 +160,21 @@ So, to handle errors use try/catch
     } catch (madmis\JiraApi\Exception\ClientException $ex) {
         // any actions (log error, send email, ...) 
     }
+
+# Running the tests
+To run the tests, you'll need to install [phpunit](https://phpunit.de/) and [behat](https://github.com/Behat/Behat). 
+Easiest way to do this is through composer.
+
+    composer install
+
+### Running Unit tests
+
+    php vendor/bin/phpunit -c phpunit.xml.dist
+
+### Running Behat tests
+
+To run Behat test you'll need to install [Jira](https://www.atlassian.com/software/jira/download).
+Create config file from example `behat.yml.dist` 
+
+    php vendor/bin/behat -c behat.yml
+
