@@ -23,6 +23,7 @@ To create new endpoint - [create issue](https://github.com/madmis/jira-api/issue
 
 # Usage
 
+    ```php
     $api = new madmis\JiraApi\JiraApi('http://localhost:8080/', '/rest/api/2');
     
     $auth = new madmis\JiraApi\Authentication\Basic('email@test.com', 'password');
@@ -42,6 +43,7 @@ To create new endpoint - [create issue](https://github.com/madmis/jira-api/issue
       'key' => "MFTP-4"
       'fields' => { ... }
     ]
+    ```
 
 ###Create Issue
 
