@@ -53,8 +53,23 @@ class SearchEndpoint extends AbstractEndpoint
                 'expand' => $expand,
             ]
         ];
-        $response = $this->sendRequest(Http::METHOD_GET, $this->getApiUrn(), $options);
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn(), $options);
+    }
 
-        return $response;
+    /**
+     * Get issues by keys
+     * @param array $keys issue keys
+     * @param string $fields the list of fields to return for each issue. By default, all navigable fields are returned.
+     * @return array
+     */
+    public function issuesByKeys(array $keys, $fields = '*navigable')
+    {
+        return $this->search(
+            sprintf('key IN (%s)', implode(',', $keys)),
+            0,
+            count($keys),
+            false,
+            $fields
+        );
     }
 }
