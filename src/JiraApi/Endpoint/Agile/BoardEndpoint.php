@@ -12,7 +12,22 @@ use madmis\JiraApi\Exception\ClientException;
  */
 class BoardEndpoint extends AbstractEndpoint
 {
-    protected $baseUrn = '/agile/1.0/board';
+    /**
+     * @var string
+     */
+    protected $baseUrn = '/rest/agile/1.0/board';
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    public function getApiUrn(array $params = [])
+    {
+        $path = $params ? implode('/', $params) : '';
+
+        return sprintf('%s/%s', $this->baseUrn, $path);
+    }
+
 
     /**
      * Docs:
