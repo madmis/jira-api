@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use madmis\JiraApi\Authentication\AuthenticationInterface;
 use madmis\JiraApi\Client\ClientInterface;
 use madmis\JiraApi\Client\GuzzleClient;
+use madmis\JiraApi\Endpoint\Agile\BoardEndpoint;
 use madmis\JiraApi\Endpoint\AttachmentEndpoint;
 use madmis\JiraApi\Endpoint\EndpointFactory;
 use madmis\JiraApi\Endpoint\IssueEndpoint;
@@ -14,6 +15,7 @@ use madmis\JiraApi\Endpoint\ProjectEndpoint;
 use madmis\JiraApi\Endpoint\SearchEndpoint;
 use madmis\JiraApi\Endpoint\TempoEndpoint;
 use madmis\JiraApi\Endpoint\UserEndpoint;
+use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -36,6 +38,7 @@ class JiraApi
      * @param string $jiraBaseUri example: http://localhost:8080
      * @param string $jiraApiUrn example: /rest/api/2
      * @param array $options extra parameters
+     * @throws AccessException
      */
     public function __construct($jiraBaseUri, $jiraApiUrn, array $options = [])
     {
@@ -48,6 +51,7 @@ class JiraApi
 
     /**
      * @param OptionsResolver $resolver
+     * @throws AccessException
      */
     protected function configureOptions(OptionsResolver $resolver)
     {
@@ -134,6 +138,14 @@ class JiraApi
     public function tempo()
     {
         return $this->endpointFactory->getEndpoint('tempo', $this->client);
+    }
+
+    /**
+     * @return BoardEndpoint
+     */
+    public function aglieBoard()
+    {
+        return $this->endpointFactory->getEndpoint(BoardEndpoint::class, $this->client);
     }
 }
 

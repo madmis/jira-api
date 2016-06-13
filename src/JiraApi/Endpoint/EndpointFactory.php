@@ -19,6 +19,7 @@ class EndpointFactory
      * @param string $type endpoint type
      * @param ClientInterface $client
      * @return EndpointInterface
+     * @throws \InvalidArgumentException
      */
     public function getEndpoint($type, ClientInterface $client)
     {
