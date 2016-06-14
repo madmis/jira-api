@@ -1,6 +1,11 @@
 # JIRA REST API PHP Client
 
-[![Build Status](https://secure.travis-ci.org/madmis/jira-api.png)](http://travis-ci.org/madmis/jira-api)
+[![SensioLabsInsight][sensiolabs-insight-image]][sensiolabs-insight-link]
+[![Build Status][testing-image]][testing-link]
+[![Coverage Status][coverage-image]][coverage-link]
+[![Latest Stable Version][stable-image]][package-link]
+[![Total Downloads][downloads-image]][package-link]
+[![License][license-image]][license-link]
 
 JIRA provides REST APIs that you can use to interact with JIRA programmatically.
 This API client will help you interact with JIRA by REST API. 
@@ -188,3 +193,19 @@ Create config file from example `behat.yml.dist`
 
     php vendor/bin/behat -c behat.yml
 
+
+
+[testing-link]: https://travis-ci.org/madmis/jira-api
+[testing-image]: https://travis-ci.org/madmis/jira-api.svg?branch=master
+
+[sensiolabs-insight-link]: https://insight.sensiolabs.com/projects/7332bbe0-7ecf-4228-afdb-e599c60c9aa0
+[sensiolabs-insight-image]: https://insight.sensiolabs.com/projects/7332bbe0-7ecf-4228-afdb-e599c60c9aa0/mini.png
+
+[package-link]: https://packagist.org/packages/madmis/jira-api
+[downloads-image]: https://poser.pugx.org/madmis/jira-api/downloads
+[stable-image]: https://poser.pugx.org/madmis/jira-api/v/stable
+[license-image]: https://poser.pugx.org/madmis/jira-api/license
+[license-link]: https://packagist.org/packages/madmis/jira-api
+
+[coverage-link]: https://coveralls.io/github/madmis/jira-api?branch=master
+[coverage-image]: https://coveralls.io/repos/github/madmis/jira-api/badge.svg?branch=master

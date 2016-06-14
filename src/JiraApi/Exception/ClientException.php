@@ -53,5 +53,4 @@ class ClientException extends \RuntimeException implements JiraApiExceptionInter
     {
         return $this->response !== null;
     }
-
 }

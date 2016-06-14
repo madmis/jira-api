@@ -127,5 +127,4 @@ class GuzzleClient extends Client implements ClientInterface
     {
         return $this->lastResponse;
     }
-
 }

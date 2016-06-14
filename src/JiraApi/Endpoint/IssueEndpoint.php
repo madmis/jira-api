@@ -150,7 +150,7 @@ class IssueEndpoint extends AbstractEndpoint
             'multipart' => [],
             'headers' => ['X-Atlassian-Token' => 'nocheck'],
         ], $options);
-        foreach($files as $file) {
+        foreach ($files as $file) {
             if (!file_exists($file)) {
                 throw new \InvalidArgumentException("File {$file} does not exist");
             }

@@ -64,12 +64,13 @@ abstract class AbstractEndpoint implements EndpointInterface
     protected function deserializeItems(array $items, $className)
     {
 
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $items[$key] = $this->deserializeItem($item, $className);
         }
 
         return $items;
     }
+
     /**
      * @param array $item
      * @param string $className

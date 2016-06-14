@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
+use madmis\JiraApi\Util\Arr;
 
 /**
  * Class SearchEndpoint
@@ -41,7 +42,7 @@ class SearchEndpoint extends AbstractEndpoint
      * @param string $expand A comma-separated list of the parameters to expand.
      * @return array
      */
-    public function search($JQL, $startAt = 0, $maxResult = 50, $validateQuery = false,  $fields = '*navigable', $expand = '')
+    public function search($JQL, $startAt = 0, $maxResult = 50, $validateQuery = false, $fields = '*navigable', $expand = '')
     {
         $options = [
             'query' => [
@@ -59,17 +60,21 @@ class SearchEndpoint extends AbstractEndpoint
     /**
      * Get issues by keys
      * @param array $keys issue keys
+     * @param array $typeNamesOrIds issues types
      * @param string $fields the list of fields to return for each issue. By default, all navigable fields are returned.
      * @return array
      */
-    public function issuesByKeys(array $keys, $fields = '*navigable')
+    public function issuesByKeys(array $keys, array $typeNamesOrIds = [], $fields = '*navigable')
     {
-        return $this->search(
-            sprintf('key IN (%s)', implode(',', $keys)),
-            0,
-            count($keys),
-            false,
-            $fields
-        );
+        $jql = sprintf('key IN (%s)', implode(',', $keys));
+
+        if ($typeNamesOrIds) {
+            $jql .= sprintf(
+                ' AND issueType IN (%s)',
+                implode(',', Arr::quoteValues($typeNamesOrIds))
+            );
+        }
+
+        return $this->search($jql, 0, count($keys), false, $fields);
     }
 }

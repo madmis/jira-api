@@ -4,7 +4,6 @@ namespace madmis\JiraApi\Model;
 
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\AccessType;
-use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class Attachment

@@ -50,8 +50,7 @@ class TempoEndpoint extends AbstractEndpoint
         }
 
         $urn = $this->getApiUrn(['worklogs']);
-        $response = $this->sendRequest(Http::METHOD_GET, $urn, $options);
 
-        return $response;
+        return $this->sendRequest(Http::METHOD_GET, $urn, $options);
     }
 }
