@@ -69,8 +69,9 @@ class BoardEndpoint extends AbstractEndpoint
      * @param string $name Must be less than 255 characters.
      * @param string $type Valid values: scrum, kanban
      * @param int $filterId Id of a filter that the user has permissions to view.
-     * @throws InvalidArgumentException
      * @return array
+     * @throws InvalidArgumentException
+     * @throws ClientException
      */
     public function createBoard($name, $type, $filterId)
     {
@@ -88,8 +89,11 @@ class BoardEndpoint extends AbstractEndpoint
     }
 
     /**
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board-getBoard}
      * @param int $boardId
      * @return array
+     * @throws ClientException
      */
     public function getBoard($boardId)
     {
@@ -97,6 +101,8 @@ class BoardEndpoint extends AbstractEndpoint
     }
 
     /**
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board-deleteBoard}
      * @param int $boardId
      * @return void
      * @throws ClientException if can't delete board
@@ -104,6 +110,44 @@ class BoardEndpoint extends AbstractEndpoint
     public function deleteBoard($boardId)
     {
         $this->sendRequest(Http::METHOD_DELETE, $this->getApiUrn([$boardId]));
+    }
+
+    /**
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board-getIssuesForBacklog}
+     * @param int $boardId
+     * @return array
+     * @throws ClientException
+     */
+    public function getBoardBacklog($boardId)
+    {
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn([$boardId, 'backlog']));
+    }
+
+
+    /**
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board/{boardId}/sprint-getAllSprints}
+     * @param int $boardId
+     * @param int $startAt
+     * @param int $maxResults
+     * @param array $state Filters results to sprints in specified states. Valid values: future, active, closed.
+     * @return array
+     * @throws ClientException
+     */
+    public function getBoardSprints($boardId, $startAt = 0, $maxResults = 50, array $state = ['active', 'future', 'closed'])
+    {
+        $options = [
+            'query' => [
+                'startAt' => (int)$startAt,
+                'maxResults' => (int)$maxResults,
+            ]
+        ];
+        if ($state) {
+            $options['query']['state'] = implode(',', $state);
+        }
+
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn([$boardId, 'sprint']), $options);
     }
 
     /**
