@@ -257,4 +257,27 @@ class IssueEndpoint extends AbstractEndpoint
 
         return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn(['createmeta']), ['query' => $query]);
     }
+
+    /**
+     * Get a list of the transitions possible for this issue by the current user, along with fields that are required and their types.
+     * Fields will only be returned if expand=transitions.fields.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#api/2/issue-getTransitions}
+     * @param string $issueIdOrKey
+     * @param string $expand
+     * @return array
+     * @throws ClientException
+     */
+    public function getTransitions($issueIdOrKey, $expand = '')
+    {
+        $query = [
+            'expand' => $expand,
+        ];
+
+        return $this->sendRequest(
+            Http::METHOD_GET,
+            $this->getApiUrn([$issueIdOrKey, 'transitions']),
+            ['query' => $query]
+        );
+    }
 }

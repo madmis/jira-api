@@ -77,4 +77,26 @@ class ProjectEndpoint extends AbstractEndpoint
     {
         return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn([$projectIdOrKey, 'role', $roleId]));
     }
+
+    /**
+     * Contains a full representation of a the specified project's versions.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#api/2/project-getProjectVersions}
+     * @param string $projectIdOrKey
+     * @param string $expand
+     * @return array
+     * @throws ClientException
+     */
+    public function getVersions($projectIdOrKey, $expand = '')
+    {
+        $query = [
+            'expand' => $expand,
+        ];
+
+        return $this->sendRequest(
+            Http::METHOD_GET,
+            $this->getApiUrn([$projectIdOrKey, 'versions']),
+            ['query' => $query]
+        );
+    }
 }
