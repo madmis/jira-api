@@ -91,7 +91,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @param bool $mapping mapping response to object
      * @return array|Issue
      */
-    public function createIssue($projectKey, $summary, $issueTypeId, $options = [], $mapping = false)
+    public function createIssue($projectKey, $summary, $issueTypeId, array $options = [], $mapping = false)
     {
         $options = array_merge($options, [
             'fields' => [
@@ -142,7 +142,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @throws \InvalidArgumentException if one of files does not exist
      * @return array
      */
-    public function createAttachment($issueIdOrKey, array $files, $options = [], $mapping = false)
+    public function createAttachment($issueIdOrKey, array $files, array $options = [], $mapping = false)
     {
         $uri = $this->getApiUrn([$issueIdOrKey, 'attachments']);
 
@@ -194,7 +194,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @param string $expand optional flags: renderedBody (provides body rendered in HTML)
      * @return array
      */
-    public function addComment($issueIdOrKey, $comment, $visibility = [], $expand = '')
+    public function addComment($issueIdOrKey, $comment, array $visibility = [], $expand = '')
     {
         $options = [
             'json' => ['body' => $comment],

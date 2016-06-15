@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
+use madmis\JiraApi\Exception\ClientException;
 
 /**
  * Tempo - this is jira plugin for timesheets.
@@ -35,6 +36,7 @@ class TempoEndpoint extends AbstractEndpoint
      * @param string $dateTo Y-m-d
      * @param string $userName name of the user you wish to get the worklogs for
      * @return array
+     * @throws ClientException
      */
     public function getTempoWorklog($projectKey, $dateFrom, $dateTo, $userName = null)
     {

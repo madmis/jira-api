@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
+use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Model\IssueType;
 
 /**
@@ -17,6 +18,7 @@ class IssueTypeEndpoint extends AbstractEndpoint
      * Returns a list of all issue types visible to the user
      * @param bool $mapping mapping response to object
      * @return array|IssueType[]
+     * @throws ClientException
      */
     public function getIssueTypes($mapping = false)
     {

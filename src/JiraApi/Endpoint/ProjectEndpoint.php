@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
+use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Model\Project;
 
 /**
@@ -17,6 +18,7 @@ class ProjectEndpoint extends AbstractEndpoint
      * @param string $expand
      * @param bool $mapping mapping response items to objects
      * @return array|Project[]
+     * @throws ClientException
      */
     public function getProjects($expand = '', $mapping = false)
     {
@@ -35,6 +37,7 @@ class ProjectEndpoint extends AbstractEndpoint
      * @param string $expand
      * @param bool $mapping mapping response to object
      * @return array|Project
+     * @throws ClientException
      */
     public function getProject($projectIdOrKey, $expand = '', $mapping = false)
     {

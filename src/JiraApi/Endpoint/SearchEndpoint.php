@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
+use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Util\Arr;
 
 /**
@@ -41,6 +42,7 @@ class SearchEndpoint extends AbstractEndpoint
      * @param string $fields the list of fields to return for each issue. By default, all navigable fields are returned.
      * @param string $expand A comma-separated list of the parameters to expand.
      * @return array
+     * @throws ClientException
      */
     public function search($JQL, $startAt = 0, $maxResult = 50, $validateQuery = false, $fields = '*navigable', $expand = '')
     {
@@ -63,6 +65,7 @@ class SearchEndpoint extends AbstractEndpoint
      * @param array $typeNamesOrIds issues types
      * @param string $fields the list of fields to return for each issue. By default, all navigable fields are returned.
      * @return array
+     * @throws ClientException
      */
     public function issuesByKeys(array $keys, array $typeNamesOrIds = [], $fields = '*navigable')
     {

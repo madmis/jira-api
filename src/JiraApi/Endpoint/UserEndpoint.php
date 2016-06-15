@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
+use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Model\User;
 
 /**
@@ -17,6 +18,7 @@ class UserEndpoint extends AbstractEndpoint
      * @param string $username
      * @param bool $mapping mapping response items to objects
      * @return array|User[]
+     * @throws ClientException
      */
     public function getUserByName($username, $mapping = false)
     {
@@ -27,6 +29,7 @@ class UserEndpoint extends AbstractEndpoint
      * @param string $userKey
      * @param bool $mapping mapping response items to objects
      * @return array|User[]
+     * @throws ClientException
      */
     public function getUserByKey($userKey, $mapping = false)
     {
@@ -37,6 +40,7 @@ class UserEndpoint extends AbstractEndpoint
      * @param array $params
      * @param bool $mapping
      * @return array|User[]
+     * @throws ClientException
      */
     private function getUser(array $params, $mapping = false)
     {

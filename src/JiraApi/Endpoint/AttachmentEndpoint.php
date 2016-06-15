@@ -3,6 +3,7 @@
 namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
+use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Model\Attachment;
 
 /**
@@ -17,6 +18,7 @@ class AttachmentEndpoint extends AbstractEndpoint
      * @param int $attachmentId
      * @param bool $mapping mapping response to object
      * @return array|Attachment
+     * @throws ClientException
      */
     public function getAttachment($attachmentId, $mapping = false)
     {
