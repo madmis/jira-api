@@ -7,6 +7,7 @@ use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Model\Attachment;
 use madmis\JiraApi\Model\Issue;
 use madmis\JiraApi\Model\Worklog;
+use madmis\JiraApi\Util\Arr;
 
 /**
  * Class IssueEndpoint
@@ -68,6 +69,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @param string $issueIdOrKey
      * @param array $params
      * @return void
+     * @throws ClientException
      */
     public function editIssue($issueIdOrKey, array $params)
     {
@@ -90,6 +92,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @param array $options
      * @param bool $mapping mapping response to object
      * @return array|Issue
+     * @throws ClientException
      */
     public function createIssue($projectKey, $summary, $issueTypeId, array $options = [], $mapping = false)
     {
@@ -116,6 +119,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @param string $expand
      * @param bool $mapping mapping response to object
      * @return array|Worklog[]
+     * @throws ClientException
      */
     public function getWorklog($issueIdOrKey, $expand = '', $mapping = false)
     {
@@ -139,8 +143,9 @@ class IssueEndpoint extends AbstractEndpoint
      * @param array $files files path
      * @param array $options
      * @param bool $mapping mapping response to object
-     * @throws \InvalidArgumentException if one of files does not exist
      * @return array
+     * @throws \InvalidArgumentException if one of files does not exist
+     * @throws ClientException
      */
     public function createAttachment($issueIdOrKey, array $files, array $options = [], $mapping = false)
     {
@@ -177,6 +182,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @param string $issueIdOrKey
      * @param string $watcher username
      * @return void
+     * @throws ClientException
      */
     public function setWatcher($issueIdOrKey, $watcher)
     {
@@ -193,6 +199,7 @@ class IssueEndpoint extends AbstractEndpoint
      * @param array $visibility Example: ["type" => "role", "value" => "Administrators"]
      * @param string $expand optional flags: renderedBody (provides body rendered in HTML)
      * @return array
+     * @throws ClientException
      */
     public function addComment($issueIdOrKey, $comment, array $visibility = [], $expand = '')
     {
@@ -208,5 +215,46 @@ class IssueEndpoint extends AbstractEndpoint
         $urn = $this->getApiUrn([$issueIdOrKey, 'comment']);
 
         return $this->sendRequest(Http::METHOD_POST, $urn, $options);
+    }
+
+    /**
+     * Returns the meta data for creating issues.
+     * Fields will only be returned if expand=projects.issuetypes.fields.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#api/2/issue-getCreateIssueMeta}
+     * @param array $projectIds combined with the projectKeys param, lists the projects with which to filter the results. If empty, all projects are returned.
+     * @param array $projectKeys combined with the projectIds param, lists the projects with which to filter the results. If empty, all projects are returned.
+     * @param array $issueTypeIds combinded with issueTypeNames, lists the issue types with which to filter the results. If empty, all issue types are returned.
+     * @param array $issueTypeNames combinded with issueTypeIds, lists the issue types with which to filter the results. If empty, all issue types are returned.
+     * @param string $expand
+     * @return array
+     * @throws ClientException
+     */
+    public function getCreateMeta(
+        array $projectIds = [],
+        array $projectKeys = [],
+        array $issueTypeIds = [],
+        array $issueTypeNames = [],
+        $expand = ''
+    ) {
+
+        $query = [
+            'expand' => $expand,
+        ];
+
+        if ($projectIds) {
+            $query['projectIds'] = implode(',', $projectIds);
+        }
+        if ($projectKeys !== null) {
+            $data['projectKeys'] = implode(',', $projectKeys);
+        }
+        if ($issueTypeIds !== null) {
+            $data['issuetypeIds'] = implode(',', $issueTypeIds);
+        }
+        if ($issueTypeNames !== null) {
+            $data['issuetypeNames'] = implode(',', Arr::quoteValues($issueTypeNames));
+        }
+
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn(['createmeta']), ['query' => $query]);
     }
 }

@@ -50,4 +50,31 @@ class ProjectEndpoint extends AbstractEndpoint
 
         return $response;
     }
+
+    /**
+     * Returns all roles in the given project Id or key, with links to full details on each role.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#api/2/project/{projectIdOrKey}/role-getProjectRoles}
+     * @param string $projectIdOrKey
+     * @return array
+     * @throws ClientException
+     */
+    public function getRoles($projectIdOrKey)
+    {
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn([$projectIdOrKey, 'role']));
+    }
+
+    /**
+     * Returns the details for a given project role in a project.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#api/2/project/{projectIdOrKey}/role-getProjectRole}
+     * @param string $projectIdOrKey
+     * @param int $roleId
+     * @return array
+     * @throws ClientException
+     */
+    public function getRoleDetails($projectIdOrKey, $roleId)
+    {
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn([$projectIdOrKey, 'role', $roleId]));
+    }
 }
