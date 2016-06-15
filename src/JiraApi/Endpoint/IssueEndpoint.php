@@ -246,13 +246,13 @@ class IssueEndpoint extends AbstractEndpoint
             $query['projectIds'] = implode(',', $projectIds);
         }
         if ($projectKeys !== null) {
-            $data['projectKeys'] = implode(',', $projectKeys);
+            $query['projectKeys'] = implode(',', $projectKeys);
         }
         if ($issueTypeIds !== null) {
-            $data['issuetypeIds'] = implode(',', $issueTypeIds);
+            $query['issuetypeIds'] = implode(',', $issueTypeIds);
         }
         if ($issueTypeNames !== null) {
-            $data['issuetypeNames'] = implode(',', Arr::quoteValues($issueTypeNames));
+            $query['issuetypeNames'] = implode(',', Arr::quoteValues($issueTypeNames));
         }
 
         return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn(['createmeta']), ['query' => $query]);
