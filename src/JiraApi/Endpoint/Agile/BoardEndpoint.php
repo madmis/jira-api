@@ -5,6 +5,7 @@ namespace madmis\JiraApi\Endpoint\Agile;
 use HttpLib\Http;
 use madmis\JiraApi\Endpoint\AbstractEndpoint;
 use madmis\JiraApi\Exception\ClientException;
+use madmis\JiraApi\Exception\InvalidArgumentException;
 
 /**
  * Class BoardEndpoint
@@ -12,6 +13,9 @@ use madmis\JiraApi\Exception\ClientException;
  */
 class BoardEndpoint extends AbstractEndpoint
 {
+    const TYPE_SCRUM = 'scrum';
+    const TYPE_KANBAN = 'kanban';
+
     /**
      * @var string
      */
@@ -27,7 +31,6 @@ class BoardEndpoint extends AbstractEndpoint
 
         return sprintf('%s/%s', $this->baseUrn, $path);
     }
-
 
     /**
      * Docs:
@@ -57,5 +60,57 @@ class BoardEndpoint extends AbstractEndpoint
         );
 
         return $response;
+    }
+
+    /**
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board-createBoard}
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#api/2/filter-createFilter}
+     * @param string $name Must be less than 255 characters.
+     * @param string $type Valid values: scrum, kanban
+     * @param int $filterId Id of a filter that the user has permissions to view.
+     * @throws InvalidArgumentException
+     * @return array
+     */
+    public function createBoard($name, $type, $filterId)
+    {
+        if (!in_array($type, $this->getTypes(), true)) {
+            throw new InvalidArgumentException();
+        }
+
+        $options = [
+            'name' => $name,
+            'type' => $type,
+            'filterId' => $filterId,
+        ];
+
+        return $this->sendRequest(Http::METHOD_POST, $this->getApiUrn(), ['json' => $options]);
+    }
+
+    /**
+     * @param int $boardId
+     * @return array
+     */
+    public function getBoard($boardId)
+    {
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn([$boardId]));
+    }
+
+    /**
+     * @param int $boardId
+     * @return void
+     * @throws ClientException if can't delete board
+     */
+    public function deleteBoard($boardId)
+    {
+        $this->sendRequest(Http::METHOD_DELETE, $this->getApiUrn([$boardId]));
+    }
+
+    /**
+     * @return array
+     */
+    private function getTypes()
+    {
+        return [self::TYPE_SCRUM, self::TYPE_KANBAN];
     }
 }

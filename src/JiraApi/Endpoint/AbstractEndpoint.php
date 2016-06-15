@@ -5,6 +5,7 @@ namespace madmis\JiraApi\Endpoint;
 use GuzzleHttp\Psr7\Request;
 use JMS\Serializer\SerializerBuilder;
 use madmis\JiraApi\Client\ClientInterface;
+use madmis\JiraApi\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -103,6 +104,7 @@ abstract class AbstractEndpoint implements EndpointInterface
      * @param array $options Request options to apply to the given
      *                                  request and to the transfer.
      * @return array response
+     * @throws ClientException
      */
     public function sendRequest($method, $uri, array $options = [])
     {
