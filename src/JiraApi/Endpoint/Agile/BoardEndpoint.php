@@ -155,6 +155,7 @@ class BoardEndpoint extends AbstractEndpoint
      * This only includes versions that the user has permission to view.
      * Docs:
      *  - {@link https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board/{boardId}/version-getAllVersions}
+     * @param int $boardId
      * @param int $startAt
      * @param int $maxResults
      * @param bool|null $released Filters results to versions that are either released or unreleased. Valid values: true, false.

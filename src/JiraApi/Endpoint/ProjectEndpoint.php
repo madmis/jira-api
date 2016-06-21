@@ -99,4 +99,34 @@ class ProjectEndpoint extends AbstractEndpoint
             ['query' => $query]
         );
     }
+
+    /**
+     * Returns all versions for the specified project. Results are paginated.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/latest/#api/2/project-getProjectVersionsPaginated}
+     * @param string $projectIdOrKey
+     * @param int $startAt
+     * @param int $maxResults
+     * @param string $orderBy Results can be ordered by the following fields: sequence, name,  startDate, releaseDate
+     * @param string $expand
+     * @return array
+     * @throws ClientException
+     */
+    public function getPaginatedVersions($projectIdOrKey, $startAt = 0, $maxResults = 50, $orderBy = '', $expand = '')
+    {
+        $query = [
+            'startAt' => $startAt,
+            'maxResults' => $maxResults,
+            'expand' => $expand,
+        ];
+        if ($orderBy) {
+            $query['orderBy'] = $orderBy;
+        }
+
+        return $this->sendRequest(
+            Http::METHOD_GET,
+            $this->getApiUrn([$projectIdOrKey, 'version']),
+            ['query' => $query]
+        );
+    }
 }
