@@ -7,7 +7,6 @@ use madmis\JiraApi\Exception\ClientException;
 use madmis\JiraApi\Model\Attachment;
 use madmis\JiraApi\Model\Issue;
 use madmis\JiraApi\Model\Worklog;
-use madmis\JiraApi\Util\Arr;
 
 /**
  * Class IssueEndpoint
@@ -245,14 +244,14 @@ class IssueEndpoint extends AbstractEndpoint
         if ($projectIds) {
             $query['projectIds'] = implode(',', $projectIds);
         }
-        if ($projectKeys !== null) {
+        if ($projectKeys) {
             $query['projectKeys'] = implode(',', $projectKeys);
         }
-        if ($issueTypeIds !== null) {
+        if ($issueTypeIds) {
             $query['issuetypeIds'] = implode(',', $issueTypeIds);
         }
-        if ($issueTypeNames !== null) {
-            $query['issuetypeNames'] = implode(',', Arr::quoteValues($issueTypeNames));
+        if ($issueTypeNames) {
+            $query['issuetypeNames'] = implode(',', $issueTypeNames);
         }
 
         return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn(['createmeta']), ['query' => $query]);

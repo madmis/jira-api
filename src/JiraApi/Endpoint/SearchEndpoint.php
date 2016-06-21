@@ -4,7 +4,6 @@ namespace madmis\JiraApi\Endpoint;
 
 use HttpLib\Http;
 use madmis\JiraApi\Exception\ClientException;
-use madmis\JiraApi\Util\Arr;
 
 /**
  * Class SearchEndpoint
@@ -74,7 +73,7 @@ class SearchEndpoint extends AbstractEndpoint
         if ($typeNamesOrIds) {
             $jql .= sprintf(
                 ' AND issueType IN (%s)',
-                implode(',', Arr::quoteValues($typeNamesOrIds))
+                implode(',', $typeNamesOrIds)
             );
         }
 
