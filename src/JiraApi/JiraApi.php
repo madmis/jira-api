@@ -15,6 +15,7 @@ use madmis\JiraApi\Endpoint\ProjectEndpoint;
 use madmis\JiraApi\Endpoint\SearchEndpoint;
 use madmis\JiraApi\Endpoint\TempoEndpoint;
 use madmis\JiraApi\Endpoint\UserEndpoint;
+use madmis\JiraApi\Endpoint\VersionEndpoint;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -146,6 +147,14 @@ class JiraApi
     public function aglieBoard()
     {
         return $this->endpointFactory->getEndpoint(BoardEndpoint::class, $this->client);
+    }
+
+    /**
+     * @return VersionEndpoint
+     */
+    public function version()
+    {
+        return $this->endpointFactory->getEndpoint(VersionEndpoint::class, $this->client);
     }
 }
 
