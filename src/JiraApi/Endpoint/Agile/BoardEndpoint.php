@@ -151,6 +151,32 @@ class BoardEndpoint extends AbstractEndpoint
     }
 
     /**
+     * Returns all versions from a board, for a given board Id.
+     * This only includes versions that the user has permission to view.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira-software/REST/cloud/#agile/1.0/board/{boardId}/version-getAllVersions}
+     * @param int $startAt
+     * @param int $maxResults
+     * @param bool|null $released Filters results to versions that are either released or unreleased. Valid values: true, false.
+     * @return array
+     * @throws ClientException
+     */
+    public function getVersions($boardId, $startAt = 0, $maxResults = 50, $released = null)
+    {
+        $options = [
+            'query' => [
+                'startAt' => (int)$startAt,
+                'maxResults' => (int)$maxResults,
+            ]
+        ];
+        if (is_bool($released)) {
+            $options['query']['released'] = $released;
+        }
+
+        return $this->sendRequest(Http::METHOD_GET, $this->getApiUrn([$boardId, 'sprint']), $options);
+    }
+
+    /**
      * @return array
      */
     private function getTypes()
