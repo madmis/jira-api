@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.5.0",
         "guzzlehttp/psr7": "^1.2",
-        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/guzzle": "^6.2",
         "httplib/http": "^1.0",
         "jms/serializer": "^1.0",
         "symfony/options-resolver": "^2.7|^3.1"
