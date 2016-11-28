@@ -279,4 +279,27 @@ class IssueEndpoint extends AbstractEndpoint
             ['query' => $query]
         );
     }
+
+    /**
+     * Perform a transition on an issue. When performing the transition you can update or set other issue fields.
+     * Docs:
+     *  - {@link https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-doTransition}
+     * @param string $issueIdOrKey
+     * @param integer $transitionId
+     * @param array $fields
+     * @param string $expand
+     * @return array
+     * @throws ClientException
+     */
+    public function doTransition($issueIdOrKey, $transitionId, array $fields = [], $expand = '')
+    {
+        return $this->sendRequest(
+            Http::METHOD_POST,
+            $this->getApiUrn([$issueIdOrKey, 'transitions']),
+            [
+                'json' => array_merge($fields, ['transition' => ['id' => $transitionId]]),
+                'query' => ['expand' => $expand]
+            ]
+        );
+    }
 }
